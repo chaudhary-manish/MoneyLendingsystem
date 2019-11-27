@@ -1,0 +1,108 @@
+
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+{%  if module == 'register'%}
+<h1>Create a New Account</h1>
+      <form action ="register" method ="POST">
+            {% csrf_token %}
+       <table>
+        <tr>
+         <td>FirstName :</td> <td><input type="text" name="firstname" required></td><br>
+        
+            <td>LastName :</td> <td><input type="text" name="lastname" required></td><br>
+        </tr>
+        <tr>
+            <td>Country :</td> <td><input type="text" name="country" required></td><br>
+       
+            <td>DOB :</td> <td><input type="Date" name="dateofbirth" required></td><br>
+        </tr>
+        <tr>
+            <td>AddressLine1 :</td> <td><input type="text" name="addressline1" required></td><br>
+       
+            <td>AddressLine2 :</td> <td><input type="text" name="addressline2" required></td><br>
+        </tr>
+        <tr>
+            <td>Company :</td> <td><input type="text" name="company" required></td><br>
+       
+            <td>City :</td> <td><input type="text" name="city" required></td><br>
+        </tr>
+        <tr>
+            <td>PostalCode :</td> <td><input type="number" name="postalcode" 
+              maxlength="5"required ></td><br>
+        
+         <td>Email :</td> <td><input type="text" name="email" required></td><br>
+        </tr>
+        <tr>
+            <td>Mobile NO. :</td> <td><input type="number" name="mobileno" maxlength="10" required></td><br>
+       
+            <td>SSN NO. :</td> <td><input type="text" name="ssnno" maxlength="9" required></td><br>
+        </tr>
+        <tr>
+            <td>Phone NO. :</td> <td><input type="text" name="phoneno" maxlength="10" required></td><br>
+        </tr>
+       
+        <tr>
+         <td colspan ="2"><input type="submit" value="Submit"></td>
+        
+            <td colspan ="2">
+              <a href="login" class="w3-bar-item w3-button">Login with existing Account</a>
+              </td>
+            
+          </tr>
+       </table>
+      </form>
+    {% elif module == 'login' %}
+
+        <h1>Login with Existing Account</h1>
+        <form action ="login" method ="POST">
+            {% csrf_token %}
+        <table>
+        
+        <tr>       
+        <td >Email :</td> <td><input type="text" name="email"></td><br>
+        </tr>
+        <tr>       
+            <td >Password :</td> <td><input type="password" name="password"></td><br>
+        </tr>
+
+        <tr>    
+        <td ><input type="submit" value="Submit"></td>
+        
+            <td >
+                <a href="register" class="w3-bar-item w3-button">Create New User</a>
+                </td>
+            
+            </tr>
+        </table>
+        </form>
+      {% elif module == 'contact' %}
+
+      <h1>Contact US:</h1>
+      <form action ="contact" method ="POST">
+            {% csrf_token %}
+       <table>
+       
+        <tr>       
+         <td >Email :</td> <td><input type="text" name="email"></td><br>
+        </tr>
+        <tr>       
+          <td >Subject :</td> <td><input type="text" name="subject"></td><br>
+        </tr>
+        <tr>       
+          <td >Message :</td> <td><input type="textarea" name="messages"></td><br>
+        </tr> 
+
+        <tr>    
+         <td colspan="2" ><input type="submit" value="Submit"></td>       
+            
+          </tr>
+       </table>
+      </form>
+     
+   {% endif %}  
+
+{% endblock content %}
