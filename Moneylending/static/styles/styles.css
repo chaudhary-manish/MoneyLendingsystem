@@ -33,9 +33,17 @@ h1 {
   font-family: "SIMPSON";
   
 }
-form {
+.signup {
 	width: 500px;
-	margin: auto;
+  margin-top: -251px;
+  margin-left: 330px;
+}
+
+.login {
+	width: 500px;
+  margin: auto;
+  margin-top: -58px;
+  
 }
 input[type=text], select {
     width: 100%;

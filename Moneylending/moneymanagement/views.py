@@ -26,7 +26,7 @@ def register(request):
         ssnno= request.POST['ssnno']
         phoneno= request.POST['phoneno']
         password = 12345
-        
+        #student = Student.objects.last()
         if User.objects.filter(username=email).exists():
             print('user exist')
         else:

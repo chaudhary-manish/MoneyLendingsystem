@@ -7,7 +7,7 @@
 
 {%  if module == 'register'%}
 <h1>Create a New Account</h1>
-      <form action ="register" method ="POST">
+      <form class ="signup" action ="register" method ="POST">
             {% csrf_token %}
        <table>
         <tr>
@@ -26,30 +26,28 @@
             <td>AddressLine2 :</td> <td><input type="text" name="addressline2" required></td><br>
         </tr>
         <tr>
-            <td>Company :</td> <td><input type="text" name="company" required></td><br>
+           
        
             <td>City :</td> <td><input type="text" name="city" required></td><br>
+             <td>PostalCode :</td> <td><input type="number" name="postalcode" 
+              maxlength="5"required ></td><br>
         </tr>
         <tr>
-            <td>PostalCode :</td> <td><input type="number" name="postalcode" 
-              maxlength="5"required ></td><br>
+           
         
          <td>Email :</td> <td><input type="text" name="email" required></td><br>
+         <td>SSN NO. :</td> <td><input type="text" name="ssnno" maxlength="9" required></td><br>
         </tr>
         <tr>
             <td>Mobile NO. :</td> <td><input type="number" name="mobileno" maxlength="10" required></td><br>
-       
-            <td>SSN NO. :</td> <td><input type="text" name="ssnno" maxlength="9" required></td><br>
-        </tr>
-        <tr>
             <td>Phone NO. :</td> <td><input type="text" name="phoneno" maxlength="10" required></td><br>
-        </tr>
-       
+            
+        </tr>      
         <tr>
          <td colspan ="2"><input type="submit" value="Submit"></td>
         
             <td colspan ="2">
-              <a href="login" class="w3-bar-item w3-button">Login with existing Account</a>
+              <a href="login">Login with existing Account</a>
               </td>
             
           </tr>
@@ -58,7 +56,7 @@
     {% elif module == 'login' %}
 
         <h1>Login with Existing Account</h1>
-        <form action ="login" method ="POST">
+        <form class ="login" action ="login" method ="POST">
             {% csrf_token %}
         <table>
         
@@ -82,7 +80,7 @@
       {% elif module == 'contact' %}
 
       <h1>Contact US:</h1>
-      <form action ="contact" method ="POST">
+      <form class ="login" action ="contact" method ="POST">
             {% csrf_token %}
        <table>
        
