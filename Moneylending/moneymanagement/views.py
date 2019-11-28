@@ -62,3 +62,12 @@ def contact(request):
 
 def groups(request):
     return render(request,'groups.html',{'module':'groups'})
+
+def creategroup(request):
+    return render(request,'useractivity.html',{'module':'creategroup'})
+
+def editprofile(request):
+    return render(request,'useractivity.html',{'module':'editprofile'})
+
+def invitegroup(request):
+    return render(request,'useractivity.html',{'module':'invitegroup'})

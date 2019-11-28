@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+<div class="alignmentbody">
+   {{user.last_name}}
+    {% if module == 'creategroup'%}
+         <h1>Create Group:</h1>
+      <form action ="creategroup" method ="POST">
+            {% csrf_token %}
+       <table>
+       
+        <tr>       
+         <td >Group Name :</td> <td><input type="text" name="GroupName"></td><br>
+        </tr>
+        <tr>       
+          <td >Payments :</td> <td><input type="number" name="payments"></td><br>
+        </tr>
+        <tr>       
+          <td >Pay frequency :</td> <td><input type="number" name="payfrequency"></td><br>
+        </tr> 
+         <tr>       
+          <td >Start Date :</td> <td><input type="date" name="startdate"></td><br>
+        </tr> 
+         <tr>       
+          <td >Last Date :</td> <td><input type="date" name="lastdate"></td><br>
+        </tr> 
+
+        <tr>    
+         <td colspan="2" ><input type="submit" value="Submit"></td>            
+          </tr>
+       </table>
+      </form>
+    {% elif module == 'editprofile' %}
+        <h1>Edit Profile:</h1>
+      <form action ="creategroup" method ="POST">
+            {% csrf_token %}
+       <table>
+       <tr>    
+         <td colspan="2" ><img scr=""></td>            
+          </tr>
+          <tr>    
+         <td colspan="2" ><input type="file" value="profilepic"></td>            
+          </tr>
+          <tr>    
+         <td colspan="2" ><input type="text" value="setting"></td>            
+          </tr>
+        <tr>    
+         <td colspan="2" ><input type="submit" value="Submit"></td>            
+          </tr>
+       </table>
+      </form>
+
+    {% elif module == 'invitegroup' %}
+      <h1>Invite Group:</h1>
+      <form action ="invitegroup" method ="POST">
+            {% csrf_token %}
+       <table>
+        <tr>       
+          <td >Group Name:</td> <td><input type="text" name="groupname" required></td><br>
+        </tr> 
+        <tr>       
+          <td >Invite Email:</td> <td><input type="text" name="invitemail" required></td><br>
+        </tr> 
+        <tr>    
+         <td colspan="2" ><input type="submit" value="Submit" ></td>            
+          </tr>
+       </table>
+      </form>
+
+    {% elif module == 'login' %}
+
+    {% endif %} 
+  
+ 
+
+
+
+{% endblock content %}

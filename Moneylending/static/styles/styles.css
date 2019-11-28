@@ -62,11 +62,7 @@ input[type=text], select {
     background-color: #45a049;
   }
   
-  div {
-    border-radius: 1px;
-    background-color: #f2f2f2;
-    padding: 5px;
-  }
+
   table {
     width: 80%
   }
@@ -74,5 +70,8 @@ input[type=text], select {
     width: 150px
   }
   .alignmentbody{
-    margin-top: 90px;
+    margin-top: 34px;
+    margin-left: 147px;
+    margin-right: 201px;
   }
+  .button1 {width: 250px;}
