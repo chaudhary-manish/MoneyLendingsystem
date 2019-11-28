@@ -25,26 +25,40 @@ def register(request):
         mobileno= request.POST['mobileno']
         ssnno= request.POST['ssnno']
         phoneno= request.POST['phoneno']
+        password = 12345
         
         if User.objects.filter(username=email).exists():
-            print('email exits')
-            send_mail(
-            'Subject here',
-            'Here is the message.',
-            'chaudhary94rc@gmail.com',
-            'chaudhary94rc@gmail.com',
-            fail_silently=False,)
+            print('user exist')
         else:
-            print(firstname)
-            return render(request,'home.html',{'module':'register'})
+           User.objects.create_user(username=email,password=password,
+                                    email=email,first_name=firstname,last_name=lastname)
+           return render(request,'home.html',{'module':'register'})
     else:
          return render(request,'home.html',{'module':'register'})
      
 def login(request):
     if request.method == 'POST':
-        send_mail('Subject here', 'Here is the message.', settings.EMAIL_HOST_USER,
-         ['to@example.com'], fail_silently=False)
-    return render(request,'home.html',{'module':'login'})
+        email= request.POST['email']
+        password= request.POST['password']
+        user =auth.authenticate(username=email,password=password)
+        if User is not None:
+            auth.login(request,user)
+            return render(request,'groups.html',{'module':'groups'})
+        else:
+            print('bad credintual')
+            return render(request,'home.html',{'module':'login'})
+            
+        
+        # send_mail('Subject here', 'Here is the message.', settings.EMAIL_HOST_USER,
+        #  ['to@example.com'], fail_silently=False)
+    return render(request,'home.html',{'module':'register'})
 
+def logout(request):
+    auth.logout(request)
+    return render(request,'home.html',{'module':'login'})
+                  
 def contact(request):
     return render(request,'home.html',{'module':'contact'})
+
+def groups(request):
+    return render(request,'groups.html',{'module':'groups'})
