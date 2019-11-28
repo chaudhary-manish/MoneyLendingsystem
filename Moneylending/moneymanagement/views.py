@@ -51,7 +51,7 @@ def login(request):
         
         # send_mail('Subject here', 'Here is the message.', settings.EMAIL_HOST_USER,
         #  ['to@example.com'], fail_silently=False)
-    return render(request,'home.html',{'module':'register'})
+    return render(request,'home.html',{'module':'login'})
 
 def logout(request):
     auth.logout(request)
