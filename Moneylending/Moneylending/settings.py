@@ -120,7 +120,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-# DJANGO_SETTINGS_MODULE='Moneylending'
+DJANGO_SETTINGS_MODULE='Moneylending'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'in-v3.mailjet.com'
