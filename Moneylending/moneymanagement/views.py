@@ -103,3 +103,11 @@ def invitegroup(request):
     # groupdetails['module'] = 'invitegroup'
     # groupdetails['usergroups'] = usergroups
     return render(request,'useractivity.html',{'module':'invitegroup'})
+
+def sendMailJet():
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Moneylending.settings")
+    from django.core.mail import send_mail
+
+    print('mail sending')
+    send_mail('test', 'django', 'sd2009002@rediffmail.com', ['siddharth.dubey.1993@gmail.com'], fail_silently=False)
+    print('mail sent')

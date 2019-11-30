@@ -120,11 +120,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+# DJANGO_SETTINGS_MODULE='Moneylending'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'chaudhary.manish@thinksys.com'
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 587
+EMAIL_HOST = 'in-v3.mailjet.com'
+EMAIL_HOST_USER = '6dbd8f1d107bc4aa98d8c9e1f5c2bf87'
+EMAIL_HOST_PASSWORD = '5860435bbed68ac8c0cd6be17e03e584'
+EMAIL_PORT = 25
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
