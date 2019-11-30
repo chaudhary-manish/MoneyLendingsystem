@@ -4,11 +4,11 @@ from  django.contrib.auth.models import User,Group
 # Create your models here.
 
 class UserDetails(models.Model):   
-    userID = models.OneToOneField(User,on_delete=models.CASCADE)    
-    company= models.CharField(max_length=30)    
+    userID = models.OneToOneField(User,on_delete=models.CASCADE)
+    dateofbirth=models.DateField(max_length=8 , null=True, blank=True)    
     mobilenumber=models.IntegerField(max_length=10)    
-    phoneenumber=models.IntegerField(max_length=10)
-    profilepic=models.ImageField()
+    phonenumber=models.IntegerField(max_length=10)
+    profilepic=models.ImageField(null=True, blank=True)
 
 class Address(models.Model):
     userID = models.OneToOneField(User,on_delete=models.CASCADE)  
@@ -20,7 +20,6 @@ class Address(models.Model):
     country = models.CharField(max_length=30)
 
 class GroupDescription(models.Model):
-    groupID = models.OneToOneField(Group,on_delete=models.CASCADE)  
     groupName = models.CharField(max_length=30)
     payments= models.CharField(max_length=30)    
     paymentsFrequency = models.IntegerField(max_length=5)

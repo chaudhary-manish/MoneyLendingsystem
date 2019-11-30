@@ -1,8 +1,9 @@
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth.models import User,auth
+from django.contrib.auth.models import User,auth,Group
 from django.conf import settings
+from moneymanagement.models import *
 
 # Create your views here.
 
@@ -18,7 +19,6 @@ def register(request):
         dateofbirth= request.POST['dateofbirth']
         addressline1= request.POST['addressline1']
         addressline2= request.POST['addressline2']
-        company= request.POST['company']
         city= request.POST['city']
         postalcode= request.POST['postalcode']
         email= request.POST['email']
@@ -29,10 +29,21 @@ def register(request):
         #student = Student.objects.last()
         if User.objects.filter(username=email).exists():
             print('user exist')
+            return render(request,'home.html',{'module':'register'})
         else:
-           User.objects.create_user(username=email,password=password,
+            User.objects.create_user(username=email,password=password,
                                     email=email,first_name=firstname,last_name=lastname)
-           return render(request,'home.html',{'module':'register'})
+            UserID= User.objects.last().id
+            UserDetail = UserDetails(userID_id=UserID,dateofbirth=dateofbirth,mobilenumber=mobileno,
+                                    phonenumber=phoneno)
+            UserDetail.save()
+            UserAddress  = Address(userID_id=UserID,addressLine1=addressline1,
+                                    addressLine2=addressline2,city=city,postelCode=postalcode,
+                                    ssnnNmber=ssnno,country=country)
+            UserAddress.save()
+            user = auth.authenticate(username=email,password=password)
+            auth.login(request,user)
+            return render(request,'groups.html',{'module':'groups'})
     else:
          return render(request,'home.html',{'module':'register'})
      
@@ -43,6 +54,8 @@ def login(request):
         user =auth.authenticate(username=email,password=password)
         if User is not None:
             auth.login(request,user)
+            request.session['userid'] = user.id
+            request.session['useremail'] = user.email
             return render(request,'groups.html',{'module':'groups'})
         else:
             print('bad credintual')
@@ -64,10 +77,29 @@ def groups(request):
     return render(request,'groups.html',{'module':'groups'})
 
 def creategroup(request):
-    return render(request,'useractivity.html',{'module':'creategroup'})
+    if request.method == 'POST':
+        GroupName = request.POST['GroupName']
+        payments = request.POST['payments']
+        payfrequency = request.POST['payfrequency']
+        startdate = request.POST['startdate']
+        lastdate = request.POST['lastdate']
+        userid = request.session['userid']
+        GroupDesc = GroupDescription(groupName=GroupName,payments=payments,
+                                    paymentsFrequency=payfrequency,startDate=startdate
+                                    ,endDate=lastdate,createBy=userid,isActive=1)
+        GroupDesc.save()
+        return render(request,'useractivity.html',{'module':'invitegroup'})
+        
+    else:
+        return render(request,'useractivity.html',{'module':'creategroup'})
 
 def editprofile(request):
     return render(request,'useractivity.html',{'module':'editprofile'})
 
 def invitegroup(request):
+    # userid = request.session['userid']
+    # usergroups = GroupDescription.objects.filter(createBy=userid,isActive=1).only('groupName')
+    # groupdetails={}
+    # groupdetails['module'] = 'invitegroup'
+    # groupdetails['usergroups'] = usergroups
     return render(request,'useractivity.html',{'module':'invitegroup'})

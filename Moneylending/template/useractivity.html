@@ -4,10 +4,9 @@
 
 {% block content %}
 <div class="alignmentbody">
-   {{user.last_name}}
     {% if module == 'creategroup'%}
          <h1>Create Group:</h1>
-      <form action ="creategroup" method ="POST">
+      <form class ="login" action ="creategroup" method ="POST">
             {% csrf_token %}
        <table>
        
@@ -34,7 +33,7 @@
       </form>
     {% elif module == 'editprofile' %}
         <h1>Edit Profile:</h1>
-      <form action ="creategroup" method ="POST">
+      <form class ="login" action ="creategroup" method ="POST">
             {% csrf_token %}
        <table>
        <tr>    
@@ -54,10 +53,10 @@
 
     {% elif module == 'invitegroup' %}
       <h1>Invite Group:</h1>
-      <form action ="invitegroup" method ="POST">
+      <form action ="invitegroup" method ="POST" class ="login">
             {% csrf_token %}
        <table>
-        <tr>       
+        <tr>   
           <td >Group Name:</td> <td><input type="text" name="groupname" required></td><br>
         </tr> 
         <tr>       
