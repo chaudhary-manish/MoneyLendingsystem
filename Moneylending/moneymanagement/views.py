@@ -26,6 +26,7 @@ def register(request):
         ssnno= request.POST['ssnno']
         phoneno= request.POST['phoneno']
         password = 12345
+        to_email = [email]
         #student = Student.objects.last()
         if User.objects.filter(username=email).exists():
             print('user exist')
@@ -41,6 +42,7 @@ def register(request):
                                     addressLine2=addressline2,city=city,postelCode=postalcode,
                                     ssnnNmber=ssnno,country=country)
             UserAddress.save()
+            send_mail('Your auto generated password', '12345', 'sd2009002@rediffmail.com', to_email, fail_silently=False)
             user = auth.authenticate(username=email,password=password)
             auth.login(request,user)
             return render(request,'groups.html',{'module':'groups'})
@@ -51,8 +53,9 @@ def login(request):
     if request.method == 'POST':
         email= request.POST['email']
         password= request.POST['password']
-        user =auth.authenticate(username=email,password=password)
-        if User is not None:
+        user =auth.authenticate(username=email,password=password)        
+        
+        if User is not None:            
             auth.login(request,user)
             request.session['userid'] = user.id
             request.session['useremail'] = user.email
@@ -78,17 +81,20 @@ def groups(request):
 
 def creategroup(request):
     if request.method == 'POST':
-        GroupName = request.POST['GroupName']
-        payments = request.POST['payments']
-        payfrequency = request.POST['payfrequency']
-        startdate = request.POST['startdate']
-        lastdate = request.POST['lastdate']
         userid = request.session['userid']
-        GroupDesc = GroupDescription(groupName=GroupName,payments=payments,
-                                    paymentsFrequency=payfrequency,startDate=startdate
-                                    ,endDate=lastdate,createBy=userid,isActive=1)
-        GroupDesc.save()
-        return render(request,'useractivity.html',{'module':'invitegroup'})
+        if GroupDescription.objects.filter(createBy=userid,isActive=1).exists():
+            return render(request,'useractivity.html',{'module':'invitegroup','message':'You  have already active group'})
+        else:    
+            GroupName = request.POST['GroupName']
+            payments = request.POST['payments']
+            payfrequency = request.POST['payfrequency']
+            startdate = request.POST['startdate']
+            noofperiod = request.POST['noofperiod']            
+            GroupDesc = GroupDescription(groupName=GroupName,payments=payments,
+                                        paymentsFrequency=payfrequency,startDate=startdate
+                                        ,noofperiod=noofperiod,createBy=userid,isActive=1)
+            GroupDesc.save()
+            return render(request,'useractivity.html',{'module':'invitegroup'})
         
     else:
         return render(request,'useractivity.html',{'module':'creategroup'})
@@ -97,17 +103,20 @@ def editprofile(request):
     return render(request,'useractivity.html',{'module':'editprofile'})
 
 def invitegroup(request):
-    # userid = request.session['userid']
+    # userid = updetails={}
+    # grrequest.session['userid']
     # usergroups = GroupDescription.objects.filter(createBy=userid,isActive=1).only('groupName')
-    # groupdetails={}
-    # groupdetails['module'] = 'invitegroup'
+    # grooupdetails['module'] = 'invitegroup'
     # groupdetails['usergroups'] = usergroups
-    return render(request,'useractivity.html',{'module':'invitegroup'})
+    userid = request.session['userid']
+    groups = GroupDescription.objects.filter(createBy=userid,isActive=1)
+    return render(request,'useractivity.html',{'module':'invitegroup','groups':groups})
 
-# def sendMailJet():
-#     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Moneylending.settings")
-#     from django.core.mail import send_mail
+def following(request):
+    userid = request.session['userid']
+    usergroups = GroupDescription.objects.filter(createBy=userid,isActive=1)
+    return render(request,'useractivity.html',{'module':'following','groups':usergroups})
 
-#     print('mail sending')
-#     send_mail('test', 'django', 'sd2009002@rediffmail.com', ['siddharth.dubey.1993@gmail.com'], fail_silently=False)
-#     print('mail sent')
+
+def follower(request):
+    return render(request,'useractivity.html',{'module':'follower'})

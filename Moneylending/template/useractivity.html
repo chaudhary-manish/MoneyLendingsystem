@@ -17,13 +17,17 @@
           <td >Payments :</td> <td><input type="number" name="payments"></td><br>
         </tr>
         <tr>       
-          <td >Pay frequency :</td> <td><input type="number" name="payfrequency"></td><br>
+          <td >Pay frequency :</td> <td><select name="payfrequency">
+          <option value="M" selected >Monthly</option>
+          <option value="W">Weekly</option>
+         
+        </select></td><br>
         </tr> 
          <tr>       
           <td >Start Date :</td> <td><input type="date" name="startdate"></td><br>
         </tr> 
          <tr>       
-          <td >Last Date :</td> <td><input type="date" name="lastdate"></td><br>
+          <td >No of Period :</td> <td><input type="number" name="noofperiod"></td><br>
         </tr> 
 
         <tr>    
@@ -57,7 +61,13 @@
             {% csrf_token %}
        <table>
         <tr>   
-          <td >Group Name:</td> <td><input type="text" name="groupname" required></td><br>
+          <td >Group Name:</td> <td>
+            <select name="groupname">
+              <option value="" Selected>Select</option>
+               {% for group in groups%}
+              <option value={{group.groupName}}>{{group.groupName}}</option>
+              {% endfor %}
+              </select></td><br>
         </tr> 
         <tr>       
           <td >Invite Email:</td> <td><input type="text" name="invitemail" required></td><br>
@@ -68,7 +78,33 @@
        </table>
       </form>
 
-    {% elif module == 'login' %}
+    {% elif module == 'following' %}
+      <h1>  My Group Following test</h1>
+      
+      <table>
+        <tr> 
+         <th> SN.</th>  
+          <th> GroupName</th>
+          <th>Payments </th>
+          <th> Payfrequency</th>          
+          <th> Start Date </th>
+          <th> No of period</th>
+          </tr> 
+      {% for group in groups%}
+        <tr>
+          <td> {{forloop.counter}}</td>
+          <td>  {{group.groupName}} </td>
+          <td>{{group.payments}} </td>
+          <td>  {% if group.paymentsFrequency == 'M'%} Monthly 
+          {% else %} Weekly{% endif %}</td>
+          <td>{{group.startDate}} </td>
+          <td> {{group.noofperiod}}</td>
+        </tr>
+      {% endfor %}
+      
+
+    {% elif module == 'follower' %}
+      <h1> My Follower Group </h1>
 
     {% endif %} 
   

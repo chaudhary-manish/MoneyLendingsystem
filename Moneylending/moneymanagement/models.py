@@ -22,9 +22,9 @@ class Address(models.Model):
 class GroupDescription(models.Model):
     groupName = models.CharField(max_length=30)
     payments= models.CharField(max_length=30)    
-    paymentsFrequency = models.IntegerField(max_length=5)
+    paymentsFrequency = models.CharField(max_length=10) 
     startDate=models.DateField(max_length=12)   
-    endDate=models.DateField(max_length=9)
+    noofperiod=models.IntegerField(max_length=10 ,null=True)
     createBy = models.IntegerField(max_length=30)
     isActive = models.IntegerField(max_length=1)
 
