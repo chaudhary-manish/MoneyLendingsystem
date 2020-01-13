@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{% static 'styles/styles.css'%}">
+
+ <script src="{% static 'js/app.js' %}"></script> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -15,18 +17,18 @@
 
 
 <div class="topnav">
-   <a href="home"><img src ="{% static 'images/logo.jpg'%}" alt="HagBad" ></a>
-   <a href="home">Home</a>
-      <a href="about">About</a>
-      <a href="contact">Contact</a> 
+   <a href="{{BASE_URL}}home"><img src ="{% static 'images/logo.jpg'%}" alt="HagBad"height="42" width="110" ></a>
+   <a href="{{BASE_URL}}home">Home</a>
+      <a href="{{BASE_URL}}about">About</a>
+      <a href="{{BASE_URL}}contact">Contact</a> 
       {% if user.is_authenticated %}       
-        <a href="logout">Logout</a> 
-         <a href="groups">Groups</a> 
+        <a href="{{BASE_URL}}logout">Logout</a> 
+         <a href="{{BASE_URL}}groups">User Dashboard</a> 
          <a > hello <b>{{user.first_name}}</b></a>
       {% else %}  
-      <a href="register">Login/Signup</a>
+      <a href="{{BASE_URL}}register">Login/Signup</a>
       {% endif %}
-      <a href="home">Search</a>
+      <a href="{{BASE_URL}}home">Search</a>
 </div>      
 
 

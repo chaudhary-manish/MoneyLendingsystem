@@ -22,29 +22,33 @@ def register(request):
         city= request.POST['city']
         postalcode= request.POST['postalcode']
         email= request.POST['email']
-        mobileno= request.POST['mobileno']
-        ssnno= request.POST['ssnno']
-        phoneno= request.POST['phoneno']
+        mobileno= int(request.POST['mobileno'])
+        ssnno= int(request.POST['ssnno'])
+        phoneno= int(request.POST['phoneno'])
         password = 12345
         to_email = [email]
         #student = Student.objects.last()
         if User.objects.filter(username=email).exists():
             print('user exist')
-            return render(request,'home.html',{'module':'register'})
+            return render(request,'home.html',{'module':'register','messages' : 'User already exists'})
         else:
+            print('user test')
             User.objects.create_user(username=email,password=password,
                                     email=email,first_name=firstname,last_name=lastname)
             UserID= User.objects.last().id
             UserDetail = UserDetails(userID_id=UserID,dateofbirth=dateofbirth,mobilenumber=mobileno,
                                     phonenumber=phoneno)
-            UserDetail.save()
+           
             UserAddress  = Address(userID_id=UserID,addressLine1=addressline1,
                                     addressLine2=addressline2,city=city,postelCode=postalcode,
                                     ssnnNmber=ssnno,country=country)
             UserAddress.save()
-            send_mail('Your auto generated password', '12345', 'sd2009002@rediffmail.com', to_email, fail_silently=False)
+            UserDetail.save()
+            
             user = auth.authenticate(username=email,password=password)
             auth.login(request,user)
+            request.session['userid'] = user.id
+            request.session['useremail'] = user.email
             return render(request,'groups.html',{'module':'groups'})
     else:
          return render(request,'home.html',{'module':'register'})
@@ -55,14 +59,14 @@ def login(request):
         password= request.POST['password']
         user =auth.authenticate(username=email,password=password)        
         
-        if User is not None:            
+        print(user)
+        if user is not None:            
             auth.login(request,user)
             request.session['userid'] = user.id
             request.session['useremail'] = user.email
             return render(request,'groups.html',{'module':'groups'})
-        else:
-            print('bad credintual')
-            return render(request,'home.html',{'module':'login'})
+        else:            
+            return render(request,'home.html',{'module':'login','messages':'Invalid Username or Password'})
             
         
         # send_mail('Subject here', 'Here is the message.', settings.EMAIL_HOST_USER,
@@ -83,7 +87,8 @@ def creategroup(request):
     if request.method == 'POST':
         userid = request.session['userid']
         if GroupDescription.objects.filter(createBy=userid,isActive=1).exists():
-            return render(request,'useractivity.html',{'module':'invitegroup','message':'You  have already active group'})
+            groups = GroupDescription.objects.filter(createBy=userid,isActive=1)
+            return render(request,'useractivity.html',{'module':'invitegroup','groups':groups,'message':'You  have already active group'})
         else:    
             GroupName = request.POST['GroupName']
             payments = request.POST['payments']
@@ -94,7 +99,9 @@ def creategroup(request):
                                         paymentsFrequency=payfrequency,startDate=startdate
                                         ,noofperiod=noofperiod,createBy=userid,isActive=1)
             GroupDesc.save()
-            return render(request,'useractivity.html',{'module':'invitegroup'})
+            userid = request.session['userid']
+            groups = GroupDescription.objects.filter(createBy=userid,isActive=1)
+            return render(request,'useractivity.html',{'module':'invitegroup','groups':groups})
         
     else:
         return render(request,'useractivity.html',{'module':'creategroup'})
@@ -102,16 +109,42 @@ def creategroup(request):
 def editprofile(request):
     return render(request,'useractivity.html',{'module':'editprofile'})
 
-def invitegroup(request):
-    # userid = updetails={}
-    # grrequest.session['userid']
-    # usergroups = GroupDescription.objects.filter(createBy=userid,isActive=1).only('groupName')
-    # grooupdetails['module'] = 'invitegroup'
-    # groupdetails['usergroups'] = usergroups
-    userid = request.session['userid']
-    groups = GroupDescription.objects.filter(createBy=userid,isActive=1)
-    return render(request,'useractivity.html',{'module':'invitegroup','groups':groups})
+def payoutorder(request):
+    return render(request,'useractivity.html',{'module':'payoutorder'})
 
+def myinvitation(request,invitestatus=0,groupID=0):
+    email = request.session['useremail']
+    userid = request.session['userid'] 
+    if request.method == 'GET' and invitestatus != 0 and groupID != 0:
+        if groupID == 1:
+            GroupDetail = GroupDetails(userID =userid,payStatus=0,payoutOrder=0,groupdescpID=groupID)
+            GroupDetail.save()
+        InvitationDetails.objects.filter(emailID=email,isInvite=1,groupID=groupID).update(isInvite=0)
+        
+        
+    invitations=InvitationDetails.objects.filter(emailID=email,isInvite=1)
+    return render(request,'useractivity.html',{'module':'myinvitation','invitations':invitations,'message':'hi'})
+
+def invitegroup(request):  
+    userid = request.session['userid']
+    groups=GroupDescription.objects.filter(createBy=userid,isActive=1)
+    if GroupDescription.objects.filter(createBy=userid,isActive=1).exists():       
+        if request.method == 'POST':  
+            groupdesc= GroupDescription.objects.get(createBy=userid,isActive=1)    
+            email = request.POST['invitemail']
+            groupID = groupdesc.pk            
+            if InvitationDetails.objects.filter(groupID=groupID,emailID=email,isInvite=1).exists():
+                return render(request,'useractivity.html',{'module':'invitegroup','groups':groups,'message':'Invitation already send'})
+            else: 
+                invitation =InvitationDetails(groupID=groupID,emailID=email,isInvite=1)
+                invitation.save()
+                return render(request,'useractivity.html',{'module':'invitegroup','groups':groups,'message':'Invitaion send Successfully'})
+        else:
+            return render(request,'useractivity.html',{'module':'invitegroup','groups':groups})
+    else:
+        return render(request,'useractivity.html',{'module':'invitegroup','groups':groups,'message':'You have not active group'})
+            
+        
 def following(request):
     userid = request.session['userid']
     usergroups = GroupDescription.objects.filter(createBy=userid,isActive=1)
@@ -120,3 +153,6 @@ def following(request):
 
 def follower(request):
     return render(request,'useractivity.html',{'module':'follower'})
+
+def newcardregistor(request):
+    return render(request,'usercard.html',{'module':'newcardregistor'})

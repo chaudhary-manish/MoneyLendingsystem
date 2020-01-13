@@ -1,0 +1,37 @@
+
+{% extends "index.html" %}
+
+
+
+{% block content %}
+
+    {% if module == 'newcardregistor' %}
+        {% if messages %}<h4>{{ messages }}</h4>{% endif %}
+        <h1>Fill Card Details</h1>
+        <form class ="login" action ="login" method ="POST">
+            {% csrf_token %}
+        <table>
+        
+        <tr>       
+        <td >Customer Name :</td> <td><input type="text" name="cardname" placeholder="Name of card"></td><br>
+        </tr>
+        <tr>       
+            <td >Card Number :</td> <td><input type="number" name="cardnumber" placeholder="Please enter card Number"></td><br>
+        </tr>
+
+        <tr>       
+            <td >CVV Code :</td> <td><input type="number" name="cvvcode" placeholder="Please enter CVV code "></td><br>
+        </tr>
+
+        <tr>    
+        <td ><input type="submit" value="Submit"></td>
+        
+           <td> </td>
+            
+            </tr>
+        </table>
+        </form>
+     
+   {% endif %}  
+
+{% endblock content %}

@@ -56,7 +56,9 @@
       </form>
 
     {% elif module == 'invitegroup' %}
+       {% if message %}<h5 style="margin-left: 314px;">{{ message }}</h5>{% endif %}
       <h1>Invite Group:</h1>
+
       <form action ="invitegroup" method ="POST" class ="login">
             {% csrf_token %}
        <table>
@@ -65,12 +67,12 @@
             <select name="groupname">
               <option value="" Selected>Select</option>
                {% for group in groups%}
-              <option value={{group.groupName}}>{{group.groupName}}</option>
+              <option value={{group.ID}}>{{group.groupName}}</option>
               {% endfor %}
               </select></td><br>
         </tr> 
         <tr>       
-          <td >Invite Email:</td> <td><input type="text" name="invitemail" required></td><br>
+          <td >Invite Email:</td> <td><input type="email" name="invitemail" required></td><br>
         </tr> 
         <tr>    
          <td colspan="2" ><input type="submit" value="Submit" ></td>            
@@ -105,6 +107,29 @@
 
     {% elif module == 'follower' %}
       <h1> My Follower Group </h1>
+
+    {% elif module == 'payoutorder' %}
+      <h1> PayOut Order </h1>
+
+     {% elif module == 'myinvitation' %}
+     <h1>  My Invitation</h1>
+      
+      <table>
+        <tr> 
+          <th> SN.</th>  
+          <th> GroupName</th>
+          <th colspan="2"> Accept</th>         
+          </tr> 
+      {% for invitation in invitations%}
+        <tr>
+          <td> {{forloop.counter}}</td>
+          <td> {{invitation.groupID}} </td>
+          <td> <a href= "{{BASE_URL}}myinvitation/1/{{invitation.groupID}}/">Accept</a>
+          </td><td><a href= "{{BASE_URL}}myinvitation/2/{{invitation.groupID}}/">Reject</a> </td>          
+        </tr>
+      {% endfor %}
+      
+
 
     {% endif %} 
   

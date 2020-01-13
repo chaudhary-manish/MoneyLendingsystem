@@ -6,8 +6,8 @@ from  django.contrib.auth.models import User,Group
 class UserDetails(models.Model):   
     userID = models.OneToOneField(User,on_delete=models.CASCADE)
     dateofbirth=models.DateField(max_length=8 , null=True, blank=True)    
-    mobilenumber=models.IntegerField(max_length=10)    
-    phonenumber=models.IntegerField(max_length=10)
+    mobilenumber=models.BigIntegerField()    
+    phonenumber=models.BigIntegerField()
     profilepic=models.ImageField(null=True, blank=True)
 
 class Address(models.Model):
@@ -15,39 +15,51 @@ class Address(models.Model):
     addressLine1 = models.CharField(max_length=30)
     addressLine2= models.CharField(max_length=30)    
     city = models.CharField(max_length=20)
-    postelCode=models.IntegerField(max_length=12)   
-    ssnnNmber=models.IntegerField(max_length=9)
+    postelCode=models.BigIntegerField()   
+    ssnnNmber=models.BigIntegerField()
     country = models.CharField(max_length=30)
 
 class GroupDescription(models.Model):
+    id = models.AutoField(primary_key=True)
     groupName = models.CharField(max_length=30)
     payments= models.CharField(max_length=30)    
     paymentsFrequency = models.CharField(max_length=10) 
     startDate=models.DateField(max_length=12)   
-    noofperiod=models.IntegerField(max_length=10 ,null=True)
-    createBy = models.IntegerField(max_length=30)
-    isActive = models.IntegerField(max_length=1)
+    noofperiod=models.IntegerField(null=True)
+    createBy = models.IntegerField()
+    isActive = models.IntegerField()
 
 class GroupDetails(models.Model):
-    groupdescID = models.ForeignKey(GroupDescription,on_delete=models.CASCADE)  
-    userID = models.IntegerField(max_length=30)
-    payStatus = models.IntegerField(max_length=1)   
-    payoutOrder = models.IntegerField(max_length=30)
+    id = models.AutoField(primary_key=True)      
+    userID = models.IntegerField()
+    payStatus = models.IntegerField()   
+    payoutOrder = models.IntegerField()
+    groupdescpID = models.IntegerField()
 
 class MonthlyPaymentDetails(models.Model):
-    groupID = models.ForeignKey(GroupDescription,on_delete=models.CASCADE)  
-    userID = models.IntegerField(max_length=30)
-    paidFrequency = models.IntegerField(max_length=30)
-    paidDate = models.DateField(max_length=30)
+    id = models.AutoField(primary_key=True) 
+    groupID = models.IntegerField()  
+    userID = models.IntegerField()
+    paidFrequency = models.IntegerField()
+    paidDate = models.DateField()
 
 class InvitationDetails(models.Model):
-    groupID = models.IntegerField(max_length=30)  
-    emailID = models.IntegerField(max_length=30)
-    isInvite=models.IntegerField(max_length=30) 
+    id = models.AutoField(primary_key=True) 
+    groupID = models.IntegerField()  
+    emailID = models.CharField(max_length=30)
+    isInvite=models.IntegerField() 
 
 class UserRating(models.Model):
-    userID = models.IntegerField(max_length=30)
-    userPoint = models.IntegerField(max_length=30)    
+    userID = models.IntegerField()
+    userPoint = models.IntegerField()   
+    
+class UserbankDetails(models.Model):
+    id = models.AutoField(primary_key=True) 
+    userID = models.IntegerField()
+    bankaddress = models.IntegerField() 
+    bankname =models.CharField(max_length=30)
+    accountnumer=models.IntegerField()
+    ifscCode=  models.CharField(max_length=30) 
    
    
    

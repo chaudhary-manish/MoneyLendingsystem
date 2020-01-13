@@ -6,6 +6,9 @@
 {% block content %}
 
 {%  if module == 'register'%}
+
+ {% if messages %}<h5 style="margin-left: 314px;">{{ messages }}</h5>{% endif %}
+ 
 <h1>Create a New Account</h1>
       <form class ="signup" action ="register" method ="POST">
             {% csrf_token %}
@@ -35,12 +38,12 @@
         <tr>
            
         
-         <td>Email :</td> <td><input type="text" name="email" required></td><br>
-         <td>SSN NO. :</td> <td><input type="text" name="ssnno" maxlength="9" required></td><br>
+         <td>Email :</td> <td><input type="email" name="email" required></td><br>
+         <td>SSN NO. :</td> <td><input type="text" name="ssnno" min="8" max="9" required></td><br>
         </tr>
         <tr>
-            <td>Mobile NO. :</td> <td><input type="number" name="mobileno" maxlength="10" required></td><br>
-            <td>Phone NO. :</td> <td><input type="text" name="phoneno" maxlength="10" required></td><br>
+            <td>Mobile NO. :</td> <td><input type="text" name="mobileno" min="9" max="10" required></td><br>
+            <td>Phone NO. :</td> <td><input type="text" name="phoneno" min="9" max="10" required></td><br>
             
         </tr>      
         <tr>
@@ -54,7 +57,7 @@
        </table>
       </form>
     {% elif module == 'login' %}
-
+        {% if messages %}<h5 style="margin-left: 314px;">{{ messages }}</h5>{% endif %}
         <h1>Login with Existing Account</h1>
         <form class ="login" action ="login" method ="POST">
             {% csrf_token %}

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-mktot$5y5r8o^=p2zw%kircii%lqst=*8jos0fpep!b7awa(u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "django_base_url.context_processors.base_url",
             ],
         },
     },
@@ -77,7 +78,7 @@ WSGI_APPLICATION = 'Moneylending.wsgi.application'
 
 DATABASES = {
    'default': {
-        'NAME': 'moneylending',
+        'NAME': 'hugbad',
         'ENGINE': 'mysql.connector.django',
         'USER': 'root',
         'PASSWORD': '',
@@ -136,3 +137,4 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
 STATIC_ROOT=os.path.join(BASE_DIR,'assets')
+BASE_URL="http://127.0.0.1:8000/"
