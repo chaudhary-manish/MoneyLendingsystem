@@ -12,16 +12,16 @@ class UserDetails(models.Model):
 
 class Address(models.Model):
     userID = models.OneToOneField(User,on_delete=models.CASCADE)  
-    addressLine1 = models.CharField(max_length=30)
-    addressLine2= models.CharField(max_length=30)    
-    city = models.CharField(max_length=20)
+    addressLine1 = models.TextField(max_length=30)
+    addressLine2= models.TextField(max_length=30)    
+    city = models.TextField(max_length=20)
     postelCode=models.BigIntegerField()   
-    ssnnNmber=models.BigIntegerField()
-    country = models.CharField(max_length=30)
+    ssnnNmber=models.TextField(null=True)
+    country = models.TextField(max_length=30)
 
 class GroupDescription(models.Model):
     id = models.AutoField(primary_key=True)
-    groupName = models.CharField(max_length=30)
+    groupName = models.TextField(max_length=30)
     payments= models.CharField(max_length=30)    
     paymentsFrequency = models.CharField(max_length=10) 
     startDate=models.DateField(max_length=12)   
@@ -46,7 +46,7 @@ class MonthlyPaymentDetails(models.Model):
 class InvitationDetails(models.Model):
     id = models.AutoField(primary_key=True) 
     groupID = models.IntegerField()  
-    emailID = models.CharField(max_length=30)
+    emailID = models.TextField(max_length=30)
     isInvite=models.IntegerField() 
 
 class UserRating(models.Model):
@@ -56,10 +56,15 @@ class UserRating(models.Model):
 class UserbankDetails(models.Model):
     id = models.AutoField(primary_key=True) 
     userID = models.IntegerField()
-    bankaddress = models.IntegerField() 
-    bankname =models.CharField(max_length=30)
+    bankaddress = models.TextField() 
+    bankname =models.TextField(max_length=30)
     accountnumer=models.IntegerField()
-    ifscCode=  models.CharField(max_length=30) 
+    ifscCode=  models.TextField(max_length=30) 
+    
+class Countries(models.Model):
+    id = models.AutoField(primary_key=True) 
+    countryID=models.TextField(max_length=30)
+    countryname=models.TextField(max_length=30)
    
    
    

@@ -19,8 +19,14 @@
             <td>LastName :</td> <td><input type="text" name="lastname" required></td><br>
         </tr>
         <tr>
-            <td>Country :</td> <td><input type="text" name="country" required></td><br>
-       
+            <!--<td>Country :</td> <td><input type="text" name="country" required></td><br>-->
+           <td >Country:</td> <td>
+            <select name="country">
+              <option value="" Selected>Select</option>
+               {% for country in countries%}
+              <option value={{country.countryname}}>{{country.countryname}}</option>
+              {% endfor %}
+              </select></td><br>
             <td>DOB :</td> <td><input type="Date" name="dateofbirth" required></td><br>
         </tr>
         <tr>

@@ -23,16 +23,16 @@ def register(request):
         postalcode= request.POST['postalcode']
         email= request.POST['email']
         mobileno= int(request.POST['mobileno'])
-        ssnno= int(request.POST['ssnno'])
+        ssnno= request.POST['ssnno']
         phoneno= int(request.POST['phoneno'])
         password = 12345
         to_email = [email]
         #student = Student.objects.last()
         if User.objects.filter(username=email).exists():
-            print('user exist')
+            
             return render(request,'home.html',{'module':'register','messages' : 'User already exists'})
         else:
-            print('user test')
+            
             User.objects.create_user(username=email,password=password,
                                     email=email,first_name=firstname,last_name=lastname)
             UserID= User.objects.last().id
@@ -51,7 +51,8 @@ def register(request):
             request.session['useremail'] = user.email
             return render(request,'groups.html',{'module':'groups'})
     else:
-         return render(request,'home.html',{'module':'register'})
+         countries = Countries.objects.all()
+         return render(request,'home.html',{'module':'register','countries':countries})
      
 def login(request):
     if request.method == 'POST':
@@ -59,7 +60,7 @@ def login(request):
         password= request.POST['password']
         user =auth.authenticate(username=email,password=password)        
         
-        print(user)
+        
         if user is not None:            
             auth.login(request,user)
             request.session['userid'] = user.id
