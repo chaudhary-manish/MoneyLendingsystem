@@ -108,17 +108,35 @@ def creategroup(request):
         return render(request,'useractivity.html',{'module':'creategroup'})
 
 def editprofile(request):
-    return render(request,'useractivity.html',{'module':'editprofile'})
+    userid = request.session['userid']
+    UserDetail = UserDetails.objects.get(userID=userid)
+    UserAddress = Address.objects.filter(userID=userid)
+    return render(request,'useractivity.html',{'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress})
 
-def payoutorder(request):
-    return render(request,'useractivity.html',{'module':'payoutorder'})
+def payoutorder(request):    
+    userid = request.session['userid']
+        
+    if request.method == 'POST':
+         count=0
+         payoutlists = GroupDetails.objects.filter(isActive =1 )
+         for payoutlist in payoutlists:            
+             payoutorder = request.POST[payoutlist.Username]
+             GroupDetails.objects.filter(isActive =1,Username=payoutlist.Username).update(payoutOrder=payoutorder)
+             count +=1  
+        
+         return render(request,'groups.html',{'module':'groups'})       
+    else:
+        payoutlists = GroupDetails.objects.filter(isActive =1 )    
+        return render(request,'useractivity.html',{'module':'payoutorder','payoutlists':payoutlists})
 
 def myinvitation(request,invitestatus=0,groupID=0):
     email = request.session['useremail']
     userid = request.session['userid'] 
     if request.method == 'GET' and invitestatus != 0 and groupID != 0:
-        if groupID == 1:
-            GroupDetail = GroupDetails(userID =userid,payStatus=0,payoutOrder=0,groupdescpID=groupID)
+        if invitestatus == 1:
+            groupdetails = GroupDescription.objects.filter(id=groupID).get()
+            GroupDetail = GroupDetails(userID =userid,payStatus=0,payoutOrder=0,
+                                       Username= email,Createby=groupdetails.createBy,isActive=groupdetails.isActive,groupdescpID=groupID)
             GroupDetail.save()
         InvitationDetails.objects.filter(emailID=email,isInvite=1,groupID=groupID).update(isInvite=0)
         

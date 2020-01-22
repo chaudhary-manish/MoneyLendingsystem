@@ -35,7 +35,10 @@ class GroupDetails(models.Model):
     payStatus = models.IntegerField()   
     payoutOrder = models.IntegerField()
     groupdescpID = models.IntegerField()
-
+    Username = models.TextField()
+    Createby = models.IntegerField()
+    isActive = models.IntegerField()
+    
 class MonthlyPaymentDetails(models.Model):
     id = models.AutoField(primary_key=True) 
     groupID = models.IntegerField()  

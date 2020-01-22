@@ -6,15 +6,21 @@
 <div class="alignmentbody">
     {% if module == 'creategroup'%}
          <h1>Create Group:</h1>
-      <form class ="login" action ="creategroup" method ="POST">
+      <form class ="login" name="creategroup" action ="creategroup" method ="POST" onsubmit="return validategroup()">
             {% csrf_token %}
        <table>
        
         <tr>       
-         <td >Group Name :</td> <td><input type="text" name="GroupName"></td><br>
+         <td >Group Name :</td> <td>
+          <span id="GroupName" style="color:red">  </span><br>
+         <input type="text" name="GroupName"></td><br>
         </tr>
         <tr>       
-          <td >Payments :</td> <td><input type="number" name="payments"></td><br>
+          <td >Payments :</td>
+          
+           <td>
+           <span id="payments" style="color:red">  </span><br>
+           <input type="text" name="payments"></td><br>
         </tr>
         <tr>       
           <td >Pay frequency :</td> <td><select name="payfrequency">
@@ -24,10 +30,14 @@
         </select></td><br>
         </tr> 
          <tr>       
-          <td >Start Date :</td> <td><input type="date" name="startdate"></td><br>
+          <td >Start Date :</td> <td>
+          <span id="startdate" style="color:red">  </span><br>
+          <input type="text" name="startdate" id="datestart" required></td><br>
         </tr> 
          <tr>       
-          <td >No of Period :</td> <td><input type="number" name="noofperiod"></td><br>
+          <td >No of Period :</td> <td>
+           <span id="noofperiod" style="color:red">  </span><br>
+          <input type="text" name="noofperiod"></td><br>
         </tr> 
 
         <tr>    
@@ -37,20 +47,70 @@
       </form>
     {% elif module == 'editprofile' %}
         <h1>Edit Profile:</h1>
-      <form class ="login" action ="creategroup" method ="POST">
+       <form name="registorform" class ="signup" action ="editprofile" method ="POST" onsubmit="return validateform()">
             {% csrf_token %}
-       <table>
-       <tr>    
-         <td colspan="2" ><img scr=""></td>            
-          </tr>
-          <tr>    
-         <td colspan="2" ><input type="file" value="profilepic"></td>            
-          </tr>
-          <tr>    
-         <td colspan="2" ><input type="text" value="setting"></td>            
-          </tr>
-        <tr>    
-         <td colspan="2" ><input type="submit" value="Submit"></td>            
+       <table >
+        <tr>
+         <td>FirstName :</td> <td>
+         <span id="firstname" style="color:red">  </span><br>
+         <input type="text" name="firstname" value="{{user.first_name}}"required></td><br>
+        
+            <td>LastName :</td> <td>
+             <span id="lastname" style="color:red">  </span><br>
+            <input type="text" name="lastname" value="{{user.last_name}}" required></td><br>
+        </tr>
+        <tr>
+            <!--<td>Country :</td> <td><input type="text" name="country" required></td><br>-->
+           <td >Country:</td> <td>
+            <span id="country" style="color:red"> </span><br>
+            <select name="country">
+              <option value="" Selected>Select</option>
+               {% for country in countries%}
+              <option value={{country.countryname}}>{{country.countryname}}</option>
+              {% endfor %}
+              </select></td><br>
+            <td>DOB :</td> <td>
+            <span id="dateofbirth" style="color:red"> </span><br>
+            <input type="text" id ="datepick" name="dateofbirth" value="{{UserDetail.dateofbirth}}" required></td><br>
+        </tr>
+        <tr>
+            <td>AddressLine1 :</td> <td><input type="text" name="addressline1" value="{{Address.addressLine1}}" ></td><br>
+       
+            <td>AddressLine2 :</td> <td><input type="text" name="addressline2" value="{{Address.addressLine1}}"></td><br>
+        </tr>
+        <tr>
+           
+       
+            <td>City :</td> <td><input type="text" name="city" value="{{Address.city}}" required></td><br>
+             <td>PostalCode :</td> <td>
+             <span id="postalcode" style="color:red"> </span><br>
+             <input type="text" name="postalcode"  value="{{Address.postalcode}}"
+              required ></td><br>
+        </tr>
+        <tr>       
+         <td>Email :</td> <td>
+          <span id="email" style="color:red"> </span><br>
+         <input type="email" name="email" value="{{user.email}}" disabled required></td><br>
+         <td>SSN NO. :</td> <td>
+          <span id="ssnno" style="color:red"> </span><br>
+         <input type="text" name="ssnno"  value="{{Address.ssnnNmber}}" required></td><br>
+        </tr>
+        <tr>
+            <td>Mobile NO. :</td> <td>
+             <span id="mobileno" style="color:red"> </span><br>
+            <input type="text" name="mobileno" value="{{UserDetails.mobilenumber}}" required></td><br>
+            <td>Phone NO. :</td> <td>
+             <span id="phoneno" style="color:red"> </span><br>
+            <input type="text" name="phoneno"  ></td><br>
+            
+        </tr>      
+        <tr>
+         <td colspan ="2"><input type="submit" value="Submit"></td>
+        
+            <td colspan ="2">
+              <a href="login">Login with existing Account</a>
+              </td>
+            
           </tr>
        </table>
       </form>
@@ -59,12 +119,12 @@
        {% if message %}<h5 style="margin-left: 314px;">{{ message }}</h5>{% endif %}
       <h1>Invite Group:</h1>
 
-      <form action ="invitegroup" method ="POST" class ="login">
+      <form action ="invitegroup" name ="invitegroup" method ="POST" class ="login" onsubmit="return validateinvitation()">
             {% csrf_token %}
        <table>
         <tr>   
           <td >Group Name:</td> <td>
-            <select name="groupname">
+            <select name="groupname" required>
               <option value="" Selected>Select</option>
                {% for group in groups%}
               <option value={{group.ID}}>{{group.groupName}}</option>
@@ -72,7 +132,9 @@
               </select></td><br>
         </tr> 
         <tr>       
-          <td >Invite Email:</td> <td><input type="email" name="invitemail" required></td><br>
+          <td >Invite Email:</td> <td>
+           <span id="noofperiod" style="color:red">  </span><br>
+          <input type="email" name="invitemail" required></td><br>
         </tr> 
         <tr>    
          <td colspan="2" ><input type="submit" value="Submit" ></td>            
@@ -109,7 +171,22 @@
       <h1> My Follower Group </h1>
 
     {% elif module == 'payoutorder' %}
-      <h1> PayOut Order </h1>
+      <h1> PayOut Order </h1><br><br><br><br>
+
+      <form action ="payoutorder" name ="payoutorder" method ="POST" class ="login">
+            {% csrf_token %}
+       <table>          
+      {% for payoutlist in payoutlists%}
+        <tr>
+          <td>{{payoutlist.Username}}</td>
+          <td> <input type ="number" name = "{{payoutlist.Username}}" value= "{{payoutlist.payoutOrder}}"> </td>                 
+        </tr>
+         {% endfor %}
+          <td> <input type ="submit" name = "Setpayorder"> </td> 
+         </table>
+      </form>
+
+     
 
      {% elif module == 'myinvitation' %}
      <h1>  My Invitation</h1>
