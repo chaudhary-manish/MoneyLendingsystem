@@ -178,7 +178,7 @@ function validateform()
         document.getElementById("ssnno").innerHTML = "SSN Required";
         isvalid =false;
     }
-    else if (validation.SSNvalidation(ssnno) || !(ssn.length == 10))
+    else if (!validation.SSNvalidation(ssnno) || !(ssnno.length == 10))
     {
         document.getElementById("ssnno").innerHTML = "SSN not contain any special character and length should be 10";
         isvalid =false;

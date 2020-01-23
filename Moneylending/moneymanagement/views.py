@@ -109,10 +109,35 @@ def creategroup(request):
 
 def editprofile(request):
     userid = request.session['userid']
-    UserDetail = UserDetails.objects.get(userID=userid)
-    UserAddress = Address.objects.filter(userID=userid)
-    return render(request,'useractivity.html',{'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress})
-
+    if request.method == 'POST':
+        firstname= request.POST['firstname']
+        lastname= request.POST['lastname']
+        addressline1= request.POST['addressline1']
+        addressline2= request.POST['addressline2']
+        city= request.POST['city']
+        postalcode= request.POST['postalcode']
+       
+        mobileno= int(request.POST['mobileno'])
+        message =''
+        phoneno= request.POST['phoneno']
+        print(len(phoneno))
+        if len(phoneno) < 1:
+            phoneno = 0      
+        
+        User.objects.filter(id=userid).update(first_name=firstname,last_name=lastname)
+        UserDetails.objects.filter(userID__pk=userid).update(mobilenumber=mobileno,
+                                                             phonenumber=phoneno) 
+        Address.objects.filter(userID__pk=userid).update(addressLine1=addressline1,addressLine2=addressline2
+                                                         ,city=city,postelCode=postalcode)   
+        message='Profile Updated successfully'
+    
+    UserDetail = UserDetails.objects.get(userID__pk=userid)
+    UserAddress = Address.objects.get(userID__pk=userid)
+    if request.method == 'POST':
+        return render(request,'useractivity.html',{'message':message,'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress})
+    else:
+        return render(request,'useractivity.html',{'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress})
+        
 def payoutorder(request):    
     userid = request.session['userid']
         

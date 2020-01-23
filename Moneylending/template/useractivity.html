@@ -47,6 +47,7 @@
       </form>
     {% elif module == 'editprofile' %}
         <h1>Edit Profile:</h1>
+        {% if message %}<h5 style="margin-left: 314px;">{{ message }}</h5>{% endif %}
        <form name="registorform" class ="signup" action ="editprofile" method ="POST" onsubmit="return validateform()">
             {% csrf_token %}
        <table >
@@ -63,12 +64,15 @@
             <!--<td>Country :</td> <td><input type="text" name="country" required></td><br>-->
            <td >Country:</td> <td>
             <span id="country" style="color:red"> </span><br>
-            <select name="country">
+           <!--- <select name="country">
               <option value="" Selected>Select</option>
                {% for country in countries%}
               <option value={{country.countryname}}>{{country.countryname}}</option>
               {% endfor %}
-              </select></td><br>
+              </select>-->
+              <input type="text" id ="country" name="country" value="{{Address.country}}" disabled>
+              
+              </td><br>
             <td>DOB :</td> <td>
             <span id="dateofbirth" style="color:red"> </span><br>
             <input type="text" id ="datepick" name="dateofbirth" value="{{UserDetail.dateofbirth}}" required></td><br>
@@ -84,7 +88,7 @@
             <td>City :</td> <td><input type="text" name="city" value="{{Address.city}}" required></td><br>
              <td>PostalCode :</td> <td>
              <span id="postalcode" style="color:red"> </span><br>
-             <input type="text" name="postalcode"  value="{{Address.postalcode}}"
+             <input type="text" name="postalcode"  value="{{Address.postelCode}}"
               required ></td><br>
         </tr>
         <tr>       
@@ -93,22 +97,22 @@
          <input type="email" name="email" value="{{user.email}}" disabled required></td><br>
          <td>SSN NO. :</td> <td>
           <span id="ssnno" style="color:red"> </span><br>
-         <input type="text" name="ssnno"  value="{{Address.ssnnNmber}}" required></td><br>
+         <input type="text" name="ssnno"  value="{{Address.ssnnNmber}}" disabled required></td><br>
         </tr>
         <tr>
             <td>Mobile NO. :</td> <td>
              <span id="mobileno" style="color:red"> </span><br>
-            <input type="text" name="mobileno" value="{{UserDetails.mobilenumber}}" required></td><br>
+            <input type="text" name="mobileno" value="{{UserDetail.mobilenumber}}" required></td><br>
             <td>Phone NO. :</td> <td>
              <span id="phoneno" style="color:red"> </span><br>
             <input type="text" name="phoneno"  ></td><br>
             
         </tr>      
         <tr>
-         <td colspan ="2"><input type="submit" value="Submit"></td>
+         <td colspan ="2"><input type="submit" value="Update"></td>
         
             <td colspan ="2">
-              <a href="login">Login with existing Account</a>
+             
               </td>
             
           </tr>
