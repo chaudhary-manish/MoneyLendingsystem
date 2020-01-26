@@ -1,0 +1,94 @@
+{% extends "index.html" %}
+
+
+
+{% block content %}
+<div class="alignmentbody">
+    {% if module == 'activegroup'%}
+
+     <h1>List of Active Groups  </h1>
+      
+      <table>
+        <tr> 
+         <th> SN.</th>  
+          <th> GroupName</th>
+          <th>Payments </th>
+          <th> Payfrequency</th>          
+          <th> Start Date </th>
+          <th> No of period</th>
+          </tr> 
+      {% for group in groupdetails%}
+        <tr>
+          <td> {{forloop.counter}}</td>
+          <td>  {{group.groupName}} </td>
+          <td>{{group.payments}} </td>
+          <td>  {% if group.paymentsFrequency == 'M'%} Monthly 
+          {% else %} Weekly{% endif %}</td>
+          <td>{{group.startDate}} </td>
+          <td> {{group.noofperiod}}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+     {% elif module == 'userlist' %}
+
+      <h1>List of Active Users  </h1>
+      
+      <table>
+        <tr> 
+         <th> SN.</th>  
+          <th> FirstName</th>
+          <th>LastName </th>
+          <th> Email</th> 
+          <th> Date Joined</th>        
+          </tr> 
+      {% for User in Users%}
+        <tr>
+          <td> {{forloop.counter}}</td>
+          <td>  {{User.first_name}} </td>
+          <td>{{User.last_name}} </td>
+         
+          <td>{{User.email}} </td>
+          <td>{{User.date_joined |date:"M d, Y" }} </td>
+          
+        
+        </tr>
+      {% endfor %}
+    </table>
+
+     {% elif module == 'setting' %}
+
+      <h1> Groups Setting </h1><br><br><br><br>
+
+      <form action ="setting" name ="setting" method ="POST" class ="login">
+            {% csrf_token %}
+       <table> 
+          <tr>
+            <td> Minimum Group member</td>
+            <td> <input type ="text" name = "mingroup"> </td> 
+            
+          </tr>
+          <tr>
+            <td> Maximum Group member</td>
+            <td> <input type ="text" name = "maxgroup"> </td> 
+            
+          </tr>  
+           <tr>
+            <td> Add New Period Type</td>
+            <td> <input type ="text" name = "periodtype"> </td> 
+            
+          </tr>     
+          <tr>
+            <td> <input type ="submit" name = "Setpayorder"> </td> 
+            <td> </td>
+          </tr>
+         </table>
+      </form>
+
+    {% endif %} 
+  
+ 
+
+
+
+{% endblock content %}

@@ -18,6 +18,9 @@ urlpatterns = [
       path('myinvitation',views.myinvitation,name="myinvitation"),
       path('myinvitation/<int:invitestatus>/<int:groupID>/',views.myinvitation,name="myinvitation"),
       path('payoutorder',views.payoutorder,name="payoutorder"),
-      path('newcardregistor',views.newcardregistor,name="newcardregistor")
+      path('newcardregistor',views.newcardregistor,name="newcardregistor"),
+      path('activegroups',views.activegroups,name="activegroups"),
+      path('setting',views.setting,name="setting"),
+      path('userlist',views.userlist,name="userlist")
     
 ]

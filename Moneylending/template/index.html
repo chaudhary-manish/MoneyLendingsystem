@@ -23,16 +23,23 @@
 <div class="topnav">
    <a href="{{BASE_URL}}home"><img src ="{% static 'images/logo.jpg'%}" alt="HagBad"height="42" width="110" ></a>
    <a href="{{BASE_URL}}home">Home</a>
+    {% if user.is_superuser %}
+      <a href="{{BASE_URL}}userlist">Users List</a>
+      <a href="{{BASE_URL}}activegroups">Active Group</a>
+      <a href="{{BASE_URL}}setting">Settings</a>
+
+    {% else %}
       <a href="{{BASE_URL}}about">About</a>
       <a href="{{BASE_URL}}contact">Contact</a> 
       {% if user.is_authenticated %}       
-        <a href="{{BASE_URL}}logout">Logout</a> 
-         <a href="{{BASE_URL}}groups">User Dashboard</a> 
-         <a > hello <b>{{user.first_name}}</b></a>
+      <a href="{{BASE_URL}}logout">Logout</a> 
+      <a href="{{BASE_URL}}groups">User Dashboard</a> 
+      <a > hello <b>{{user.first_name}}</b></a>
       {% else %}  
       <a href="{{BASE_URL}}register">Login/Signup</a>
       {% endif %}
       <a href="{{BASE_URL}}home">Search</a>
+    {% endif %}  
 </div>      
 
 

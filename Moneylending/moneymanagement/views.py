@@ -200,3 +200,14 @@ def follower(request):
 
 def newcardregistor(request):
     return render(request,'usercard.html',{'module':'newcardregistor'})
+
+def activegroups(request):
+    groupdetails = GroupDescription.objects.filter(isActive=1)
+    return render(request,'admin.html',{'module':'activegroup','groupdetails':groupdetails})
+
+def setting(request):
+    return render(request,'admin.html',{'module':'setting'})
+
+def userlist(request):
+    users = User.objects.all()
+    return render(request,'admin.html',{'module':'userlist','Users':users})
