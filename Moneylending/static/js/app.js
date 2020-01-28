@@ -22,6 +22,50 @@ var validation = {
     }
 };
 
+function selectstate(){
+    country =document.registorform.country.value;
+    if(country.toUpperCase() == 'USA')
+    {
+        
+        document.getElementById("addressline2input").innerHTML = "";
+        
+
+        document.getElementById("addressline2input").style.display = "none";
+        document.getElementById("addressline2select").style.display = "block";
+    }
+    else
+    {
+        document.getElementById("addressline2input").innerHTML = "";
+       
+        document.getElementById("addressline2input").style.display = "block";
+        document.getElementById("addressline2select").style.display = "none";
+    }
+    
+
+
+}
+function validatesetting()
+{
+    isvalid =true;
+    mingroup =document.setting.mingroup.value; 
+    maxgroup =document.setting.maxgroup.value; 
+    periodtype =document.setting.periodtype.value; 
+
+    if(parseInt(maxgroup) < parseInt(mingroup))
+    {
+        document.getElementById("settingerror").innerHTML = "Max group should be greater than min group";
+        isvalid =false;
+    }
+
+    if(isvalid)
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 function validatecontact()
 {
     isvalid =true;

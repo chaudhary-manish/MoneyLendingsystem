@@ -58,24 +58,27 @@
 
      {% elif module == 'setting' %}
 
+        {% if message %}<h5 style="margin-left: 314px;">{{ message }}</h5>{% endif %}
       <h1> Groups Setting </h1><br><br><br><br>
-
-      <form action ="setting" name ="setting" method ="POST" class ="login">
+         <h6 id="settingerror" style="color:red"> </h6><br>
+      <form action ="setting" name ="setting" method ="POST" class ="login" onsubmit="return validatesetting()">
             {% csrf_token %}
        <table> 
           <tr>
+            <span id="mingroup" style="color:red"> </span><br>
             <td> Minimum Group member</td>
-            <td> <input type ="text" name = "mingroup"> </td> 
+            <td> <input type ="text" name = "mingroup" requried pattern = "[0-9]"> </td> 
             
           </tr>
           <tr>
             <td> Maximum Group member</td>
-            <td> <input type ="text" name = "maxgroup"> </td> 
+            <span id="maxgroup" style="color:red"> </span><br>
+            <td> <input type ="text" name = "maxgroup" requried > </td> 
             
           </tr>  
            <tr>
             <td> Add New Period Type</td>
-            <td> <input type ="text" name = "periodtype"> </td> 
+            <td> <input type ="text" name = "periodtype" requried> </td> 
             
           </tr>     
           <tr>

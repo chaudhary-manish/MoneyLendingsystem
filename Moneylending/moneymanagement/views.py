@@ -18,13 +18,20 @@ def register(request):
         country= request.POST['country']
         dateofbirth= request.POST['dateofbirth']
         addressline1= request.POST['addressline1']
-        addressline2= request.POST['addressline2']
+        countryname = Countries.objects.get(country_id=country).countryname
+        if countryname == 'USA':
+            addressline2= request.POST['addressline2']
+        else:
+            addressline2= request.POST.get('addressline2input', False);      
         city= request.POST['city']
         postalcode= request.POST['postalcode']
         email= request.POST['email']
         mobileno= int(request.POST['mobileno'])
         ssnno= request.POST['ssnno']
-        phoneno= int(request.POST['phoneno'])
+        phoneno= request.POST['phoneno']
+        print(len(phoneno))
+        if len(phoneno) < 1:
+            phoneno = 0  
         password = 12345
         to_email = [email]
         #student = Student.objects.last()
@@ -52,7 +59,8 @@ def register(request):
             return render(request,'groups.html',{'module':'groups'})
     else:
          countries = Countries.objects.all()
-         return render(request,'home.html',{'module':'register','countries':countries})
+         states = States.objects.all()
+         return render(request,'home.html',{'module':'register','countries':countries,'states':states})
      
 def login(request):
     if request.method == 'POST':
@@ -105,7 +113,8 @@ def creategroup(request):
             return render(request,'useractivity.html',{'module':'invitegroup','groups':groups})
         
     else:
-        return render(request,'useractivity.html',{'module':'creategroup'})
+        periodtypes = Periodtype.objects.all()
+        return render(request,'useractivity.html',{'module':'creategroup','periodtypes':periodtypes})
 
 def editprofile(request):
     userid = request.session['userid']
@@ -133,10 +142,11 @@ def editprofile(request):
     
     UserDetail = UserDetails.objects.get(userID__pk=userid)
     UserAddress = Address.objects.get(userID__pk=userid)
+    countryname = Countries.objects.get(country_id=UserAddress.country).countryname
     if request.method == 'POST':
         return render(request,'useractivity.html',{'message':message,'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress})
     else:
-        return render(request,'useractivity.html',{'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress})
+        return render(request,'useractivity.html',{'module':'editprofile','UserDetail':UserDetail,'Address':UserAddress,'countryname':countryname})
         
 def payoutorder(request):    
     userid = request.session['userid']
@@ -158,14 +168,23 @@ def myinvitation(request,invitestatus=0,groupID=0):
     email = request.session['useremail']
     userid = request.session['userid'] 
     if request.method == 'GET' and invitestatus != 0 and groupID != 0:
-        if invitestatus == 1:
+        if Settings.objects.filter(id =1).exists():            
+            maxgroupcount = Settings.objects.get(id=1).maximumgroup
+        else:
+            maxgroupcount =10         
+        
+        groupcount =GroupDetails.objects.filter(id=groupID).count()        
+        if invitestatus == 1 and maxgroupcount <= groupcount :
             groupdetails = GroupDescription.objects.filter(id=groupID).get()
             GroupDetail = GroupDetails(userID =userid,payStatus=0,payoutOrder=0,
                                        Username= email,Createby=groupdetails.createBy,isActive=groupdetails.isActive,groupdescpID=groupID)
             GroupDetail.save()
-        InvitationDetails.objects.filter(emailID=email,isInvite=1,groupID=groupID).update(isInvite=0)
-        
-        
+            InvitationDetails.objects.filter(emailID=email,isInvite=1,groupID=groupID).update(isInvite=0)
+        else:
+            InvitationDetails.objects.filter(emailID=email,isInvite=1,groupID=groupID).update(isInvite=0)
+            invitations=InvitationDetails.objects.filter(emailID=email,isInvite=1)
+            return render(request,'useractivity.html',{'module':'myinvitation','invitations':invitations,'message':'You are late to accept this inviation'})
+            
     invitations=InvitationDetails.objects.filter(emailID=email,isInvite=1)
     return render(request,'useractivity.html',{'module':'myinvitation','invitations':invitations,'message':'hi'})
 
@@ -206,7 +225,23 @@ def activegroups(request):
     return render(request,'admin.html',{'module':'activegroup','groupdetails':groupdetails})
 
 def setting(request):
-    return render(request,'admin.html',{'module':'setting'})
+    if request.method == 'POST':
+        mingroup= request.POST['mingroup']
+        maxgroup= request.POST['maxgroup']
+        periodtype= request.POST['periodtype']
+        if Settings.objects.filter(id =1).exists():
+            Settings.objects.filter(id =1).update(minimumgroup=mingroup,maximumgroup=maxgroup)
+            periodtype =Periodtype(periodtypename=periodtype)
+            periodtype.save()
+        else:
+            groupsetting =Settings(minimumgroup=mingroup,maximumgroup=maxgroup)
+            periodtype =Periodtype(periodtypename=periodtype)
+            periodtype.save()
+            groupsetting.save()        
+        return render(request,'admin.html',{'module':'setting','message':'setting insert successfully'})
+        
+    else:
+        return render(request,'admin.html',{'module':'setting'})
 
 def userlist(request):
     users = User.objects.all()

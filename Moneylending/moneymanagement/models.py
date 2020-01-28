@@ -68,6 +68,24 @@ class Countries(models.Model):
     id = models.AutoField(primary_key=True) 
     countryID=models.TextField(max_length=30)
     countryname=models.TextField(max_length=30)
+    
+    
+class Settings(models.Model):
+    id = models.AutoField(primary_key=True) 
+    minimumgroup=models.IntegerField(default=3)
+    maximumgroup=models.IntegerField(default=3)
+    
+class Periodtype(models.Model):
+    id = models.AutoField(primary_key=True) 
+    periodtypename=models.TextField(max_length=30)
+
+class States(models.Model):
+    states_id = models.AutoField(primary_key=True) 
+    states_code=models.TextField(max_length=30)
+    states_name=models.TextField(max_length=30)
+   
+    
+    
    
    
    
